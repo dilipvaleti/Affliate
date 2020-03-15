@@ -4,6 +4,7 @@ import json
 import re
 import time
 from exceptions import ProductNotLoadedException
+from flask import Flask,request,make_response
 # import pdb
 
 
@@ -293,7 +294,10 @@ def boolean(truth):
         return True
     else:
         return False
-if __name__ == '__main__':
+# Flask app should start in global layout
+app=Flask(__name__)
+@app.route('/',method=['POST','GET'])
+def affliate_flipkart():
     flipkart_api = FlipkartApi(
         fk_affiliate_id='dilipvaleti',
         fk_affiliate_token='cb073df8c8ce488f9363c87ae3c493de',
@@ -337,3 +341,7 @@ if __name__ == '__main__':
             html = 'https://api.telegram.org/bot958809270:AAGSSGqTKncBk_4MsK-BtrSKVVIaRH-xyoU/sendMessage?chat_id=-1001244326041&text='+text_data
             c=requests.post(html)
         time.sleep(21600)
+if __name__ == '__main__':
+    port = int(os.getenv('POST', 5000))
+    print('starting app on port %d' % port)
+    app.run(debug=True, port=port, host='0.0.0.0')
